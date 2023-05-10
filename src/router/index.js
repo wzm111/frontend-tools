@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
-  { path: '/', component: () => import('@/views/index/Index.vue') }
+  { path: '/json2ts/', component: () => import('@/views/index/Index.vue') }
 ]
 
 const router = createRouter({

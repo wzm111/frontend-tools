@@ -1,17 +1,17 @@
 <script setup>
 import { ref } from 'vue'
 import MonacoEditor from 'monaco-editor-vue3'
-const jsonOptions =  {
+const jsonOptions = {
   theme: 'vs-dark',
   language: 'json',
-  automaticLayout: true,
+  automaticLayout: true
 }
 const jsonValue = ref('')
 
-const tsOptions =  {
+const tsOptions = {
   theme: 'vs-dark',
   language: 'typescript',
-  automaticLayout: true,
+  automaticLayout: true
 }
 const tsValue = ref('')
 const defaultTabSize = ref(4)
@@ -26,13 +26,15 @@ ${getTypeString(typeObj)}
 }
 
 function assignType(originObj, typeObj) {
-  Object.keys(originObj).forEach(key => {
+  Object.keys(originObj).forEach((key) => {
     const type = Object.prototype.toString.call(originObj[key]).slice(8, -1)
     if (type === 'Array') {
       // 是数组的话，默认第一项的类型是数组的所有类型(不考虑联合类型)
       typeObj[key] = [{}]
       // 数组子项类型
-      const arrInnerType = Object.prototype.toString.call(originObj[key][0]).slice(8, -1)
+      const arrInnerType = Object.prototype.toString
+        .call(originObj[key][0])
+        .slice(8, -1)
       // 只有数组和对象走递归
       const loopMap = new Set(['Array', 'Object'])
       if (loopMap.has(arrInnerType)) {
@@ -54,7 +56,7 @@ function assignType(originObj, typeObj) {
 //  定义递归获取 TypeScript 接口字符串的函数 默认缩进级数deep为1
 function getTypeString(typeObj, deep = 1) {
   const typeList = []
-  Object.keys(typeObj).forEach(key => {
+  Object.keys(typeObj).forEach((key) => {
     // 获取属性值的类型
     const type = Object.prototype.toString.call(typeObj[key]).slice(8, -1)
     if (type === 'Array') {
@@ -88,36 +90,49 @@ function generateTab(deep) {
 
 <template>
   <div class="json-trans-ts">
-    <MonacoEditor 
+    <MonacoEditor
       ref="monaco"
       :options="jsonOptions"
       v-model:value="jsonValue"
-      :width="800"
+      :width="700"
       :height="800"
     />
     <div class="op-bar">
-      <div>默认缩进</div>
-      <input v-model="defaultTabSize" type="text">
-      <div>接口名</div>
-      <input v-model="defaultInterfaceName" type="text">
-      <div>
+      <div class="item-view">
+        <div class="title">默认缩进:</div>
+        <input v-model="defaultTabSize" type="text" />
+      </div>
+      <div class="item-view">
+        <div class="title">接口名:</div>
+        <input v-model="defaultInterfaceName" type="text" />
+      </div>
+
+      <div class="item-view">
         <button @click="getTypeDefine">转换</button>
       </div>
     </div>
-    <MonacoEditor 
+    <MonacoEditor
       ref="monaco"
       :options="tsOptions"
       v-model:value="tsValue"
-      :width="800"
+      :width="700"
       :height="800"
     />
   </div>
 </template>
 
 <style scoped lang="less">
-  .json-trans-ts {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.json-trans-ts {
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .item-view {
+    margin-bottom: 10px;
+    .title {
+      color:#333;
+      font-size: 12px;
+    }
   }
+}
 </style>
