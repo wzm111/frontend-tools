@@ -20,6 +20,7 @@ function getTypeDefine() {
   const originObj = JSON.parse(jsonValue.value)
   const typeObj = {}
   assignType(originObj, typeObj)
+  console.log(typeObj)
   tsValue.value = `interface ${defaultInterfaceName.value} {
 ${getTypeString(typeObj)}
 }`
@@ -32,7 +33,7 @@ function assignType(originObj, typeObj) {
       // 是数组的话，默认第一项的类型是数组的所有类型(不考虑联合类型)
       typeObj[key] = [{}]
       // 数组子项类型
-      const arrInnerType = Object.prototype.toString.call(originObj[key][0]).slice(8, -1)
+      const arrInnerType = originObj[key][0] !== undefined ? Object.prototype.toString.call(originObj[key][0]).slice(8, -1) : 'any'
       // 只有数组和对象走递归
       const loopMap = new Set(['Array', 'Object'])
       if (loopMap.has(arrInnerType)) {
