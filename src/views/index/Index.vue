@@ -20,6 +20,7 @@ function getTypeDefine() {
   const originObj = JSON.parse(jsonValue.value)
   const typeObj = {}
   assignType(originObj, typeObj)
+  console.log(typeObj)
   tsValue.value = `interface ${defaultInterfaceName.value} {
 ${getTypeString(typeObj)}
 }`
